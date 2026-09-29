@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Beacon In-Home Care — Phase 1
 
-## Getting Started
+Production-quality Phase 1 for **Beacon In-Home Care**: complete visual identity + homepage only.
 
-First, run the development server:
+Existing site reference: [beaconihc.com](https://beaconihc.com)
+
+## Phase 1 scope
+
+Included:
+
+- Design tokens / visual system
+- Typography
+- Responsive header + mobile menu
+- Complete homepage
+- Footer
+- Motion system
+- Reusable component architecture
+- Accessibility-conscious implementation
+- Performance-minded Next.js setup
+
+Not included yet (Phase 2+):
+
+- About, Services, Why Beacon, Contact, Privacy Policy pages
+
+## Stack
+
+- Next.js (App Router)
+- TypeScript
+- Tailwind CSS
+- Framer Motion
+- Lucide React
+- Next/Image
+
+## Getting started
 
 ```bash
+npm install
+cp .env.example .env.local
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Content placeholders
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Replace with client-approved values before launch:
 
-## Learn More
+- Phone, email, address, hours, service area
+- Testimonials (`src/content/home.ts` — currently empty on purpose)
+- Privacy Policy page (Phase 2+)
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `npm run dev`
+- `npm run build`
+- `npm run start`
+- `npm run lint`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Credit
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Designed & Developed by [AdiTeke Software Solutions](https://aditeke.com).
