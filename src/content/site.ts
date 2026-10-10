@@ -28,12 +28,12 @@ export const siteConfig = {
   },
   contact: {
     /** Published on beaconihc.com/contact-us/ */
-    phone: process.env.NEXT_PUBLIC_PHONE || "5034771571",
+    phone: process.env.NEXT_PUBLIC_PHONE || "9712359248",
     phoneDisplay:
-      process.env.NEXT_PUBLIC_PHONE_DISPLAY || "(503) 477-1571",
-    phoneSecondary: process.env.NEXT_PUBLIC_PHONE_SECONDARY || "9712359248",
+      process.env.NEXT_PUBLIC_PHONE_DISPLAY || "(971) 235-9248",
+    phoneSecondary: process.env.NEXT_PUBLIC_PHONE_SECONDARY || "5034771571",
     phoneSecondaryDisplay:
-      process.env.NEXT_PUBLIC_PHONE_SECONDARY_DISPLAY || "(971) 235-9248",
+      process.env.NEXT_PUBLIC_PHONE_SECONDARY_DISPLAY || "(503) 477-1571",
     email: process.env.NEXT_PUBLIC_EMAIL || "info@beaconihc.com",
     emailDisplay:
       process.env.NEXT_PUBLIC_EMAIL || "info@beaconihc.com",
