@@ -23,6 +23,19 @@ export type MailResult =
   | { ok: true; transport: "webhook" | "resend" | "deferred" }
   | { ok: false; transport: "webhook" | "resend"; reason: string };
 
+/** Trim and strip wrapping quotes that hosting dashboards often include. */
+function cleanEnv(value: string | undefined) {
+  if (!value) return "";
+  const trimmed = value.trim();
+  if (
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"))
+  ) {
+    return trimmed.slice(1, -1).trim();
+  }
+  return trimmed;
+}
+
 function escapeHtml(value: string) {
   return value
     .replace(/&/g, "&amp;")
@@ -105,16 +118,17 @@ async function sendViaWebhook(
 }
 
 async function sendViaResend(inquiry: ContactInquiry): Promise<MailResult> {
-  const apiKey = process.env.RESEND_API_KEY;
+  const apiKey = cleanEnv(process.env.RESEND_API_KEY);
   const to =
-    process.env.CONTACT_TO_EMAIL ||
-    process.env.NEXT_PUBLIC_EMAIL ||
-    "elegesse@beaconihc.com";
+    cleanEnv(process.env.CONTACT_TO_EMAIL) ||
+    cleanEnv(process.env.NEXT_PUBLIC_EMAIL) ||
+    "info@beaconihc.com";
   const from =
-    process.env.CONTACT_FROM_EMAIL ||
+    cleanEnv(process.env.CONTACT_FROM_EMAIL) ||
     "Beacon In-Home Care <noreply@beaconihc.com>";
 
   if (!apiKey || !to) {
+    console.error("[contact-mail] Missing Resend credentials");
     return { ok: false, transport: "resend", reason: "missing_credentials" };
   }
 
@@ -143,14 +157,13 @@ async function sendViaResend(inquiry: ContactInquiry): Promise<MailResult> {
   }
 
   if (!response.ok) {
-    if (process.env.NODE_ENV === "development") {
-      console.error("[contact-mail] Resend failed", {
-        status: response.status,
-        message: parsed.message || bodyText.slice(0, 300),
-        to,
-        from,
-      });
-    }
+    // Safe server log for hosting dashboards (no message body / visitor PII beyond addresses already configured)
+    console.error("[contact-mail] Resend failed", {
+      status: response.status,
+      message: parsed.message || bodyText.slice(0, 300),
+      from,
+      to,
+    });
     return {
       ok: false,
       transport: "resend",
@@ -158,12 +171,11 @@ async function sendViaResend(inquiry: ContactInquiry): Promise<MailResult> {
     };
   }
 
-  if (process.env.NODE_ENV === "development") {
-    console.info("[contact-mail] Resend accepted", {
-      id: parsed.id,
-      to,
-    });
-  }
+  console.info("[contact-mail] Resend accepted", {
+    id: parsed.id,
+    to,
+    from,
+  });
 
   return { ok: true, transport: "resend" };
 }
@@ -171,13 +183,13 @@ async function sendViaResend(inquiry: ContactInquiry): Promise<MailResult> {
 export async function deliverContactInquiry(
   inquiry: ContactInquiry,
 ): Promise<MailResult> {
-  const webhook = process.env.CONTACT_WEBHOOK_URL;
+  const webhook = cleanEnv(process.env.CONTACT_WEBHOOK_URL);
 
   if (webhook) {
     return sendViaWebhook(inquiry, webhook);
   }
 
-  if (process.env.RESEND_API_KEY) {
+  if (cleanEnv(process.env.RESEND_API_KEY)) {
     return sendViaResend(inquiry);
   }
 
